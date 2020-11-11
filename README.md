@@ -1,20 +1,44 @@
 # typescript-plugin-json
+
+## Usage
+install
+
+```bash
+npm install typescript-plugin-json -D
+```
+
+```bash
+yarn add typescript-plugin-json -D
+```
+
+add it to your tsconfig.json
+```
+"compilerOptions": {
+    "plugins": [
+        { "name": "typescript-plugin-json" },
+    ]
+}
+```
+
+data.tsjson
+
+```json
+{
+    "foo": "BAR"
+}
+```
+
+*.ts
+```typescript
+import data from './data.tsjson';
+
+console.log(data.foo);
+
+```
+
 Try to cast json setting consts to strings
 
 
-Steps
-- 1 iteration
-```
-    import json from './data.json';
-```
-
-json is object with hardcoded type like
-
-```
-{
-    foo: 'BAR'
-}
-```
 
 - 2 interation
 

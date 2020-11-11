@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import tsModule from 'typescript/lib/tsserverlibrary';
 import { isJson } from './isJson';
-import { createLogger } from './logger';
+import { createLogger, Logger } from './logger';
 
 
 function getDtsSnapshot(
@@ -10,9 +10,15 @@ function getDtsSnapshot(
   fileName: string,
   scriptSnapshot: ts.IScriptSnapshot,
   compilerOptions: tsModule.CompilerOptions,
+  logger: Logger
 ) {
     // generate string 
-    // use typescript to convert it to real module
+
+    //const text = fs.readFileSync(fileName).toString();
+    //logger.log(text);
+
+    // ts.parseJsonText(fileName, text).text
+    // TODO: pick types from file
     const dtsText = `
       declare let a: {
           foo: string;
@@ -20,6 +26,7 @@ function getDtsSnapshot(
 
       export default a;
     `;
+    // use typescript to convert it to real module
     return ts.ScriptSnapshot.fromString(dtsText);
 }
 
@@ -48,6 +55,7 @@ function init({ typescript: ts }: { typescript: typeof tsModule }) {
           fileName,
           scriptSnapshot,
           compilerOptions,
+          logger
         );
       }
       const sourceFile = _createLanguageServiceSourceFile(
@@ -74,6 +82,8 @@ function init({ typescript: ts }: { typescript: typeof tsModule }) {
           sourceFile.fileName,
           scriptSnapshot,
           compilerOptions,
+          logger
+
         );
       }
       sourceFile = _updateLanguageServiceSourceFile(
