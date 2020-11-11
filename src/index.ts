@@ -6,9 +6,16 @@ function isJson(fileName: string) {
     return fileName.endsWith('json');
 }
 
-function getDtsSnapshot() {
+function getDtsSnapshot(
+  ts: typeof tsModule,
+  fileName: string,
+  scriptSnapshot: ts.IScriptSnapshot,
+  compilerOptions: tsModule.CompilerOptions,
+) {
     // generate string 
     // use typescript to convert it to real module
+    const dtsText = 'declare const json: {koko: string;};\n export default json;\n';
+    return ts.ScriptSnapshot.fromString(dtsText);
 }
 
 function init({ typescript: ts }: { typescript: typeof tsModule }) {
