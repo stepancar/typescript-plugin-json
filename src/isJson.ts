@@ -1,3 +1,3 @@
 export function isJson(fileName: string) {
-    return fileName.endsWith('tsjson');
+    return fileName.endsWith('json');
 }

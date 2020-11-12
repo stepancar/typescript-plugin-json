@@ -14,15 +14,16 @@ function getDtsSnapshot(
 ) {
     // generate string 
 
-    //const text = fs.readFileSync(fileName).toString();
+    const text = fs.readFileSync(fileName).toString();
+    const trimmedText = text.trim();
+    
     //logger.log(text);
 
     // ts.parseJsonText(fileName, text).text
     // TODO: pick types from file
     const dtsText = `
-      declare let a: {
-          foo: string;
-      }
+      type J = ${trimmedText};
+      declare let a: J;
 
       export default a;
     `;
@@ -57,15 +58,27 @@ function init({ typescript: ts }: { typescript: typeof tsModule }) {
           compilerOptions,
           logger
         );
+        const [scriptTarget, version, setNodeParents, scriptKind] = rest;
+        const sourceFile = _createLanguageServiceSourceFile(
+          fileName,
+          scriptSnapshot,
+          tsModule.ScriptTarget.Latest,
+          version,
+          setNodeParents,
+          tsModule.ScriptKind.External
+        );
+
+        sourceFile.isDeclarationFile = true;
+
+        return sourceFile;
       }
+
       const sourceFile = _createLanguageServiceSourceFile(
         fileName,
         scriptSnapshot,
         ...rest,
       );
-      if (isJson(fileName)) {
-        sourceFile.isDeclarationFile = true;
-      }
+  
       return sourceFile;
     };
 
@@ -83,17 +96,25 @@ function init({ typescript: ts }: { typescript: typeof tsModule }) {
           scriptSnapshot,
           compilerOptions,
           logger
-
         );
+
+        sourceFile = _updateLanguageServiceSourceFile(
+          sourceFile,
+          scriptSnapshot,
+          ...rest,
+        );
+
+        sourceFile.isDeclarationFile = true;
+        
+        return sourceFile;
       }
+
       sourceFile = _updateLanguageServiceSourceFile(
         sourceFile,
         scriptSnapshot,
         ...rest,
       );
-      if (isJson(sourceFile.fileName)) {
-        sourceFile.isDeclarationFile = true;
-      }
+
       return sourceFile;
     };
 

@@ -20,7 +20,7 @@ add it to your tsconfig.json
 }
 ```
 
-data.tsjson
+data.json
 
 ```json
 {
@@ -30,7 +30,7 @@ data.tsjson
 
 *.ts
 ```typescript
-import data from './data.tsjson';
+import data from './data.json';
 
 console.log(data.foo);
 

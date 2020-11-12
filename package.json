@@ -21,6 +21,9 @@
     "plugin",
     "typescript"
   ],
+  "dependencies": {
+    "typescript": "^3.8.3"
+  },
   "peerDependencies": {
     "typescript": "^3.8.3"
   },
