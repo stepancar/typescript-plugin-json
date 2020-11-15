@@ -42,7 +42,6 @@ function init({ typescript: ts }: { typescript: typeof tsModule }) {
     // TypeScript plugins have a `cwd` of `/`, which causes issues with import resolution.
     process.chdir(directory);
 
-
     // Creates new virtual source files for the json
     const _createLanguageServiceSourceFile = ts.createLanguageServiceSourceFile;
     ts.createLanguageServiceSourceFile = (
